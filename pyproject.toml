@@ -1,0 +1,7 @@
+[project]
+name = "htmlreport"
+version = "0.1.0"
+description = "Defines a context manager to forward printouts, pandas string representations, and matplotlib plots all to HTML."
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = ["matplotlib", "pandas", "markdown"]
