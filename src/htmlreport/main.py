@@ -23,14 +23,18 @@ def htmlreport(file=None, show=False):
     old_plt_show = plt.show
     old_print = builtins.print
 
+    def new_plot():
+        old_print(plot_to_html())
+        if show:
+            old_plt_show()
+        plt.close()
+
+    def new_print(*args, **kwargs):
+        old_print(*(markdown.markdown(str(x), output_format='html') for x in args), **kwargs)
+
     pandas.DataFrame.__str__ = pandas.DataFrame.to_html
-
-    if not show:
-        plt.show = lambda: (print(plot_to_html()), plt.close())
-    else:
-        plt.show = lambda: (print(plot_to_html()), old_plt_show(), plt.close())
-
-    builtins.print = lambda *x: old_print(markdown.markdown(', '.join(y.__str__() for y in x), output_format='html'))
+    plt.show = new_plot
+    builtins.print = new_print
 
     if file:
         with open(file, 'w') as f:
