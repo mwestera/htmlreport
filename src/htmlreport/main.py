@@ -32,20 +32,21 @@ def htmlreport(file=None, show=False):
 
     builtins.print = lambda *x: old_print(markdown.markdown(', '.join(y.__str__() for y in x), output_format='html'))
 
-    if sys.stdout.isatty:
-        with (open(file, 'w') if file else tempfile.NamedTemporaryFile('w', delete=False, suffix='.html')) as f:
-            url = 'file://' + f.name
+    if file:
+        with open(file, 'w') as f:
             with redirect_stdout(f):
                 yield
+    elif sys.stdout.isatty:
+        with tempfile.NamedTemporaryFile('w', delete=False, suffix='.html') as f:
+            with redirect_stdout(f):
+                yield
+            webbrowser.open('file://' + f.name)
     else:
         yield
 
     plt.show = old_plt_show
     pandas.DataFrame.__str__ = old_pandas_str
     builtins.print = old_print
-
-    if not file:
-        webbrowser.open(url)
 
 
 def plot_to_html():
