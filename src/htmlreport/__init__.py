@@ -1,1 +1,1 @@
-from .main import htmlreport
+from .main import wrap
