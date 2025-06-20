@@ -12,7 +12,7 @@ import builtins
 
 
 @contextmanager
-def htmlreport(file=None, show=False):
+def wrap(file=None, show=False):
     """
     Makes plt.show print the plots in base64 (show=True to also display them directly), and (if
     not piped/redirected in the terminal) redirects print to a temporary html file (or a file if provided).
