@@ -19,7 +19,6 @@ def wrap(file=None, show=False):
     Temporary file is opened in the browser.
     """
 
-    old_pandas_str = pandas.DataFrame.__str__
     old_plt_show = plt.show
     old_print = builtins.print
 
@@ -30,9 +29,8 @@ def wrap(file=None, show=False):
         plt.close()
 
     def new_print(*args, **kwargs):
-        old_print(*(markdown.markdown(str(x), output_format='html') for x in args), **kwargs)
+        old_print(*(x.to_html() if isinstance(x, pandas.DataFrame) else markdown.markdown(str(x), output_format='html') for x in args), **kwargs)
 
-    pandas.DataFrame.__str__ = pandas.DataFrame.to_html
     plt.show = new_plot
     builtins.print = new_print
 
@@ -49,7 +47,6 @@ def wrap(file=None, show=False):
         yield
 
     plt.show = old_plt_show
-    pandas.DataFrame.__str__ = old_pandas_str
     builtins.print = old_print
 
 
