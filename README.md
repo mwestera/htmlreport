@@ -24,7 +24,7 @@ import htmlreport
 Suppose we have a function `analyze_data` that prints some strings and some pandas tables, and shows some matplotlib plots. You can then turn this into an HTML report by doing:
 
 ```python
-from htmlreport import htmlreport
+from htmlreport import wrap
 
 def analyze_data():
     # some function that prints some stuff (e.g., markdown headers), prints 
